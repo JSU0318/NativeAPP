@@ -1,37 +1,68 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
-import { Button } from "react-native-web";
-
+import { StyleSheet, Text, View, Button, TextInput } from "react-native";
+import { useState } from "react";
+import { ScrollView } from "react-native-gesture-handler";
 export default function App() {
+  const [enteredGoalText, setEnteredGoalText] = useState("");
+  const [courseGoals, setCourseGoals] = useState([]);
+
+  function goalInputHandler(enteredText) {
+    setEnteredGoalText(enteredText);
+  }
+  function addGoalHandler() {
+    setCourseGoals((currentCourseGoals) => [...courseGoals, enteredGoalText]);
+    console.log(enteredGoalText);
+  }
+
   return (
-    <View style={{ padding: 50 }}>
-      <View style={{ backgroundColor: "red", width: 100, height: 100, justifyContent: "center", alignItems: "center" }}>
-        {/* <Text>List of goals!!</Text> */}
-        <Text>1</Text>
+    <View style={styles.appContainer}>
+      <View style={styles.inputContainer}>
+        <TextInput style={styles.textInput} placeholder="Your course goal!" onChangeText={goalInputHandler} />
+        <Button title="Add Goal" onPress={addGoalHandler} />
       </View>
-      <View
-        style={{ backgroundColor: "blue", width: 100, height: 100, justifyContent: "center", alignItems: "center" }}
-      >
-        {/* <Text>List of goals!!</Text> */}
-        <Text>2</Text>
-      </View>
-      <View
-        style={{ backgroundColor: "green", width: 100, height: 100, justifyContent: "center", alignItems: "center" }}
-      >
-        {/* <Text>List of goals!!</Text> */}
-        <Text>3</Text>
+      <View style={styles.goalsContainer}>
+        <ScrollView>
+          {courseGoals.map((goal) => (
+            <View style={styles.goalItem} key={goal}>
+              <Text style={styles.goalText}>{goal}</Text>
+            </View>
+          ))}
+        </ScrollView>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  appContainer: { padding: 20 },
-  inputContainer: { flexDirection: "column", justifyContent: "space-between" },
+  appContainer: {
+    flex: 1,
+    paddingTop: 50,
+    paddingHorizontal: 16,
+  },
+  inputContainer: {
+    flex: 0.5,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#cccccc",
+  },
+  textInput: {
+    borderWidth: 1,
+    borderColor: "#cccccc",
+    width: "70%",
+    marginRight: 8,
+    padding: 8,
+  },
+  goalsContainer: {
+    flex: 2,
+  },
+  goalItem: {
+    margin: 8,
+    padding: 8,
+    borderRadius: 6,
+    backgroundColor: "#5e0acc",
+    color: "white",
+  },
+  goalText: { color: "white" },
 });
-{
-  /* <View style={styles.inputContainer}>
-        <TextInput style={styles.textInput} placeholder="Your Course Goal!" />
-        <Button title="ADD Goal!!" /> */
-}
